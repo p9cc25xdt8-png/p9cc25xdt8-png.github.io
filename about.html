@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>サービスについて - しーぴーえいご</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#f7f9fc;--card:#fff;--text:#0f1724;--muted:#4b5563;--brand:#1f3c88;--accent:#3b82f6;--focus:#0b5fff;--shadow:0 10px 30px rgba(31,60,136,0.08)}
+    body{font-family:'Inter','Noto Sans JP',system-ui,-apple-system,'Segoe UI',sans-serif;margin:0;padding:0;background:var(--bg);color:var(--text);line-height:1.7}
+    header{background:linear-gradient(180deg,var(--brand),#19407a);color:#fff;padding:28px 20px;text-align:center}
+    header h1{font-family:'Noto Sans JP', 'Inter';font-weight:700;margin:0;font-size:22px}
+    .card{background:var(--card);max-width:800px;margin:24px auto;padding:32px;border-radius:10px;box-shadow:var(--shadow)}
+    
+    nav.site-nav{background:#fff;border-bottom:1px solid #ddd;padding:10px 20px;display:flex;justify-content:space-between;align-items:center}
+    nav.site-nav a{text-decoration:none;color:var(--brand);margin-right:15px;font-weight:500}
+    nav.site-nav a:hover{text-decoration:underline}
+    
+    h2{color:var(--brand);margin-top:32px;margin-bottom:16px;font-size:20px}
+    p{margin-bottom:16px;color:var(--text)}
+    .disclaimer{background:#fef9e7;border-left:4px solid #f39c12;padding:20px;margin:24px 0;border-radius:6px}
+    .disclaimer h3{color:#d68910;margin-top:0;font-size:18px}
+    .disclaimer p{color:#555;margin-bottom:12px;line-height:1.8}
+    
+    footer{text-align:center;padding:20px;background:#eee;font-size:14px;margin-top:40px}
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <div><strong>しーぴーえいご</strong></div>
+    <div>
+      <a href="index.html">トップ</a>
+      <a href="quiz.html">英語クイズ</a>
+      <a href="account-list.html">勘定科目リスト</a>
+      <a href="about.html" aria-current="page">サービスについて</a>
+    </div>
+  </nav>
+
+  <header>
+    <h1>サービスについて</h1>
+  </header>
+
+  <section>
+    <div class="card">
+      <h2>しーぴーえいごとは</h2>
+      <p>
+        しーぴーえいごは、公認会計士試験や会計実務に必要な英語力を、クイズ形式で効率的に学習できるサービスです。
+        勘定科目の英語表記を中心に、実務でよく使われる会計用語を楽しく学べます。
+      </p>
+
+      <h2>主な機能</h2>
+      <p>
+        <strong>・英語クイズ</strong><br>
+        文脈付き穴埋め形式で、勘定科目の英語表記を学習できます。即座にフィードバックが得られるため、効率的な学習が可能です。
+      </p>
+      <p>
+        <strong>・勘定科目リスト</strong><br>
+        よく使われる勘定科目を日英対照で一覧表示。クイズと併せて参照することで、知識の定着をサポートします。
+      </p>
+
+      <div class="disclaimer">
+        <h3>免責事項</h3>
+        <p>
+          当サイトに掲載されている会計・監査・英語学習に関する内容は、金融庁、IFRS等が公表している資料を参考に、試験対策および学習目的のために当サイト独自の編集・構成・表現により作成したものです。
+        </p>
+        <p>
+          当サイトは、金融庁またはその他の公的機関と公式な提携・関係を有するものではありません。また、金融庁公表資料の原文、標準ラベル、定義文等をそのまま転載・再配布することを目的としたものではありません。
+        </p>
+        <p>
+          掲載内容は、学習効果を高めるために要約、言い換え、問題化等の加工を行っており、金融庁公表資料の正確性や最新性を保証するものではありません。正式な情報や最新の内容については、必ず金融庁公式ウェブサイトをご確認ください。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 しーぴーえいご</p>
+    <p style="margin-top:8px">
+      <a href="privacy.html" style="color:var(--brand);text-decoration:none;margin-right:15px">プライバシーポリシー</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSd3WB8gTG7oJBGPse9XFBi6AvNBxu7nkkL3BVHSP438u3E2LQ/viewform" target="_blank" style="color:var(--brand);text-decoration:none">お問い合わせ</a>
+    </p>
+  </footer>
+</body>
+</html>

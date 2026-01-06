@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>英語クイズ - しーぴーえいご</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#f7f9fc;--card:#fff;--text:#0f1724;--muted:#4b5563;--brand:#1f3c88;--accent:#3b82f6;--focus:#0b5fff;--error:#b91c1c;--success:#047857;--shadow:0 10px 30px rgba(31,60,136,0.08)}
+    body{font-family:'Inter','Noto Sans JP',system-ui,-apple-system,'Segoe UI',sans-serif;margin:0;padding:0;background:var(--bg);color:var(--text);}
+    header{background:linear-gradient(180deg,var(--brand),#19407a);color:#fff;padding:28px 20px;text-align:center}
+    header h1{font-family:'Noto Sans JP', 'Inter';font-weight:700;margin:0;font-size:22px}
+    .card{background:var(--card);max-width:760px;margin:18px auto;padding:18px;border-radius:10px;box-shadow:var(--shadow)}
+
+    /* Subject tabs */
+    .subject-tabs{display:flex;gap:8px;max-width:760px;margin:16px auto;padding:0 18px}
+    .subject-tabs button{background:transparent;border:1px solid rgba(31,60,136,0.06);padding:8px 12px;border-radius:8px;cursor:pointer;color:var(--brand);font-weight:600}
+    .subject-tabs button[aria-selected="true"]{background:linear-gradient(90deg,var(--accent),var(--brand));color:#fff;border:none;box-shadow:0 6px 18px rgba(31,60,136,0.08)}
+    .subject-tabs button:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+
+    .options{display:flex;flex-direction:column;gap:12px;margin:16px 0;padding:0}
+    .card label{display:flex;align-items:center;gap:12px;padding:14px 16px;border:2px solid #e5e7eb;border-radius:10px;background:#fff;cursor:pointer;transition:all 0.2s ease;font-size:15px}
+    .card label:hover{background:#f8fafc;border-color:#cbd5e1}
+    .card label input[type="radio"]{width:20px;height:20px;cursor:pointer;accent-color:var(--brand)}
+    .card button{margin-top:12px;padding:10px 16px;background:var(--brand);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;transition:transform .12s ease,box-shadow .12s ease}
+    .card button:active{transform:translateY(1px)}
+
+    .progress-bar{height:8px;background:linear-gradient(90deg,#eef2ff,#f8fafc);border-radius:999px;overflow:hidden;margin:12px 0}
+    .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--brand));width:0%;transition:width .4s cubic-bezier(.2,.9,.3,1)}
+
+    /* answer highlight */
+    .card label.correct{background:#ecfdf5;border-color:#10b981;box-shadow:0 4px 12px rgba(16,185,129,0.15)}
+    .card label.incorrect{background:#fef2f2;border-color:#ef4444;box-shadow:0 4px 12px rgba(239,68,68,0.15)}
+
+    /* subtle fade for results */
+    #result{transition:opacity .18s ease,transform .18s ease;opacity:1}
+
+    nav.site-nav{background:#fff;border-bottom:1px solid #ddd;padding:10px 20px;display:flex;justify-content:space-between;align-items:center}
+    nav.site-nav a{text-decoration:none;color:var(--brand);margin-right:15px;font-weight:500}
+
+    /* Results table */
+    .result-table{width:100%;border-collapse:collapse;margin-top:12px}
+    .result-table th,.result-table td{padding:12px;border-bottom:1px solid #eef2ff;text-align:left}
+    .result-table td.ok{color:var(--success);font-weight:600}
+    .result-table td.ng{color:var(--error);font-weight:600}
+    .result-table button{padding:6px 10px;border-radius:6px;border:none;background:var(--accent);color:#fff;cursor:pointer}
+    .result-table button:hover{filter:brightness(.95)}
+
+    /* Skip link (visually hidden until focused) */
+    .skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+    .skip-link:focus{position:static;left:auto;width:auto;height:auto;padding:8px 12px;margin:8px;background:#fff;border:1px solid #eef2ff;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+
+    /* Focus styles for keyboard users */
+    :focus{outline:none}
+    :focus-visible{outline:none}
+    /* Strong visible focus for keyboard users */
+    button:focus-visible, .skip-link:focus-visible, .card label:focus-visible, nav.site-nav a:focus-visible, .result-table button:focus-visible {
+      outline:3px solid var(--focus);
+      outline-offset:3px;
+      border-radius:6px;
+      box-shadow:0 8px 24px rgba(11,88,255,0.10);
+    }
+    /* Larger ring in high-contrast mode */
+    @media (prefers-contrast: more) {
+      button:focus-visible, .skip-link:focus-visible, .card label:focus-visible, nav.site-nav a:focus-visible, .result-table button:focus-visible {
+        outline-width:4px;
+      }
+    }
+    .card label:focus-visible{box-shadow:0 8px 24px rgba(11,88,255,0.10)}
+
+    /* ensure label text is high contrast */
+    .card label{color:var(--text)}
+    .card label.correct{background:linear-gradient(180deg,#e6ffef,#f0fff5);border-color:#bbf7d0;box-shadow:0 6px 14px rgba(4,110,60,0.06)}
+    .card label.incorrect{background:linear-gradient(180deg,#fff1f0,#fff6f6);border-color:#f87171;box-shadow:0 6px 14px rgba(220,38,38,0.06)}
+    .result-table td.ng{color:var(--error);font-weight:600}
+    .result-table td.ok{color:var(--success);font-weight:600}
+    .progress-bar{border:1px solid rgba(0,0,0,0.04);padding:2px;border-radius:10px}
+
+    /* explanation area */
+    .explanation{margin-top:8px;font-size:14px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <!-- Skip link for accessibility -->
+  <a href="#quiz" class="skip-link">クイズへスキップ</a>
+
+  <nav class="site-nav">
+    <div><strong>しーぴーえいご</strong></div>
+    <div>
+      <a href="index.html">トップ</a>
+      <a href="quiz.html" aria-current="page">英語クイズ</a>
+      <a href="account-list.html">勘定科目リスト</a>
+      <a href="about.html">サービスについて</a>
+    </div>
+  </nav>
+
+  <header>
+    <h1>英語クイズ</h1>
+    <p>勘定科目等 — 会計英語で即フィードバック</p>
+  </header>
+
+  <section>
+    <!-- Quiz top / subject selection -->
+    <div id="quiz-home" class="card">
+      <h2>クイズを始める</h2>
+      <p>学習したいカテゴリを選んでください。各カテゴリをクリックするとクイズが開始されます。</p>
+      
+      <div style="margin:20px 0">
+        <h3 style="font-size:16px;color:var(--muted);margin-bottom:12px">勘定科目の分類別</h3>
+        <div class="subject-cards" role="list">
+          <button class="subject-card" data-subcategory="資産" role="listitem" tabindex="0">
+            資産
+            <span class="count" data-subcategory="資産">0問</span>
+          </button>
+          <button class="subject-card" data-subcategory="負債" role="listitem" tabindex="0">
+            負債
+            <span class="count" data-subcategory="負債">0問</span>
+          </button>
+          <button class="subject-card" data-subcategory="収益" role="listitem" tabindex="0">
+            収益
+            <span class="count" data-subcategory="収益">0問</span>
+          </button>
+          <button class="subject-card" data-subcategory="費用" role="listitem" tabindex="0">
+            費用
+            <span class="count" data-subcategory="費用">0問</span>
+          </button>
+        </div>
+      </div>
+      
+      <div style="margin:20px 0">
+        <h3 style="font-size:16px;color:var(--muted);margin-bottom:12px">全問題</h3>
+        <div class="subject-cards" role="list">
+          <button class="subject-card" data-subject="勘定科目等" role="listitem" tabindex="0">
+            すべての問題
+            <span class="count" data-subject="勘定科目等">0問</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="progress-bar hidden" aria-hidden="true">
+      <div class="progress-fill" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width:0%"></div>
+    </div>
+
+    <div id="quiz" class="hidden"></div>
+  </section>
+
+  <footer style="text-align:center;padding:20px;background:#eee">
+    <p>© 2026 しーぴーえいご</p>
+    <p style="margin-top:8px">
+      <a href="privacy.html" style="color:var(--brand);text-decoration:none;margin-right:15px">プライバシーポリシー</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSd3WB8gTG7oJBGPse9XFBi6AvNBxu7nkkL3BVHSP438u3E2LQ/viewform" target="_blank" style="color:var(--brand);text-decoration:none">お問い合わせ</a>
+    </p>
+  </footer>
+
+  <script src="questions.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

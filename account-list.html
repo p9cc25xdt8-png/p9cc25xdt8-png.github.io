@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>勘定科目リスト - しーぴーえいご</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#f7f9fc;--card:#fff;--text:#0f1724;--muted:#4b5563;--brand:#1f3c88;--accent:#3b82f6;--focus:#0b5fff;--shadow:0 10px 30px rgba(31,60,136,0.08)}
+    body{font-family:'Inter','Noto Sans JP',system-ui,-apple-system,'Segoe UI',sans-serif;margin:0;padding:0;background:var(--bg);color:var(--text);}
+    header{background:linear-gradient(180deg,var(--brand),#19407a);color:#fff;padding:28px 20px;text-align:center}
+    header h1{font-family:'Noto Sans JP', 'Inter';font-weight:700;margin:0;font-size:22px}
+    .card{background:var(--card);max-width:1100px;margin:18px auto;padding:24px;border-radius:10px;box-shadow:var(--shadow)}
+
+    nav.site-nav{background:#fff;border-bottom:1px solid #ddd;padding:10px 20px;display:flex;justify-content:space-between;align-items:center}
+    nav.site-nav a{text-decoration:none;color:var(--brand);margin-right:15px;font-weight:500}
+    nav.site-nav a:hover{text-decoration:underline}
+
+    .account-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+    .account-table th,.account-table td{padding:10px 12px;border-bottom:1px solid #eef2ff;text-align:left}
+    .account-table th{background:linear-gradient(180deg,#f8fafc,#eef2ff);font-weight:600;color:var(--brand);position:sticky;top:0;z-index:10}
+    .account-table td:first-child{color:var(--muted);width:45%}
+    .account-table td:last-child{font-weight:500;color:var(--text);width:55%}
+    .account-table tr:hover{background:#fbfdff}
+    .account-table tr.section-header{background:linear-gradient(90deg,#e0f2fe,#f0f9ff);border-top:2px solid var(--accent)}
+    .account-table tr.section-header td{font-weight:700;color:var(--brand);font-size:15px;padding:14px 12px;border-bottom:2px solid #bae6fd}
+
+    footer{text-align:center;padding:20px;background:#eee;font-size:14px;margin-top:40px}
+    
+    h2{color:var(--brand);margin-top:32px;margin-bottom:16px}
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <div><strong>しーぴーえいご</strong></div>
+    <div>
+      <a href="index.html">トップ</a>
+      <a href="quiz.html">英語クイズ</a>
+      <a href="account-list.html" aria-current="page">勘定科目リスト</a>
+      <a href="about.html">サービスについて</a>
+    </div>
+  </nav>
+
+  <header>
+    <h1>勘定科目リスト</h1>
+    <p>会計英語の勘定科目一覧</p>
+  </header>
+
+  <section>
+    <div class="card">
+      <h2>貸借対照表</h2>
+      <div id="bs-table"></div>
+    </div>
+
+    <div class="card">
+      <h2>損益計算書</h2>
+      <div id="pl-table"></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 しーぴーえいご</p>
+    <p style="margin-top:8px">
+      <a href="privacy.html" style="color:var(--brand);text-decoration:none;margin-right:15px">プライバシーポリシー</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSd3WB8gTG7oJBGPse9XFBi6AvNBxu7nkkL3BVHSP438u3E2LQ/viewform" target="_blank" style="color:var(--brand);text-decoration:none">お問い合わせ</a>
+    </p>
+  </footer>
+
+  <script>
+    // 貸借対照表データ（よく使われる勘定科目のみ）
+    const bsData = `【資産の部】
+現金及び預金	Cash and deposits
+受取手形	Notes receivable - trade
+売掛金	Accounts receivable - trade
+貸倒引当金	Allowance for doubtful accounts
+有価証券	Securities
+商品	Merchandise
+製品	Finished goods
+原材料	Raw materials
+仕掛品	Work in process
+貯蔵品	Supplies
+前払費用	Prepaid expenses
+未収収益	Accrued revenue
+短期貸付金	Short-term loans receivable
+未収入金	Accounts receivable - other
+流動資産	Current assets
+建物	Buildings
+構築物	Structures
+機械装置	Machinery and equipment
+車両運搬具	Vehicles
+工具器具備品	Tools, furniture and fixtures
+土地	Land
+建設仮勘定	Construction in progress
+減価償却累計額	Accumulated depreciation
+有形固定資産	Property, plant and equipment
+ソフトウエア	Software
+のれん	Goodwill
+特許権	Patent right
+商標権	Trademark right
+無形固定資産	Intangible assets
+投資有価証券	Investment securities
+関係会社株式	Shares of subsidiaries and associates
+長期貸付金	Long-term loans receivable
+繰延税金資産	Deferred tax assets
+投資その他の資産	Investments and other assets
+固定資産	Non-current assets
+【負債の部】
+支払手形	Notes payable - trade
+買掛金	Accounts payable - trade
+短期借入金	Short-term borrowings
+未払金	Accounts payable - other
+未払費用	Accrued expenses
+未払法人税等	Income taxes payable
+未払消費税等	Accrued consumption taxes
+前受金	Advances received
+預り金	Deposits received
+賞与引当金	Provision for bonuses
+流動負債	Current liabilities
+社債	Bonds payable
+長期借入金	Long-term borrowings
+退職給付引当金	Provision for retirement benefits
+退職給付に係る負債	Retirement benefit liability
+繰延税金負債	Deferred tax liabilities
+固定負債	Non-current liabilities
+【純資産の部】
+資本金	Share capital
+資本剰余金	Capital surplus
+資本準備金	Legal capital surplus
+その他資本剰余金	Other capital surplus
+利益剰余金	Retained earnings
+利益準備金	Legal retained earnings
+繰越利益剰余金	Retained earnings brought forward
+自己株式	Treasury shares
+株主資本	Shareholders' equity
+その他有価証券評価差額金	Valuation difference on available-for-sale securities
+繰延ヘッジ損益	Deferred gains or losses on hedges
+為替換算調整勘定	Foreign currency translation adjustment
+退職給付に係る調整累計額	Remeasurements of defined benefit plans
+評価・換算差額等	Valuation and translation adjustments`;
+
+    // 損益計算書データ（よく使われる勘定科目のみ）
+    const plData = `【収益】
+売上高	Net sales
+営業収益	Operating revenue
+受取利息	Interest income
+受取配当金	Dividend income
+為替差益	Foreign exchange gains
+固定資産売却益	Gain on sale of non-current assets
+【費用】
+売上原価	Cost of sales
+給料	Salaries
+賞与	Bonuses
+福利厚生費	Welfare expenses
+法定福利費	Legal welfare expenses
+旅費交通費	Travel and transportation expenses
+通信費	Communication expenses
+水道光熱費	Utilities
+消耗品費	Supplies expenses
+広告宣伝費	Advertising expenses
+接待交際費	Entertainment expenses
+会議費	Meeting expenses
+租税公課	Taxes and dues
+減価償却費	Depreciation
+修繕費	Repair expenses
+保険料	Insurance expenses
+地代家賃	Rent expenses
+支払手数料	Commission expenses
+支払利息	Interest expenses
+為替差損	Foreign exchange losses
+固定資産売却損	Loss on sale of non-current assets
+固定資産除却損	Loss on retirement of non-current assets
+減損損失	Impairment losses
+貸倒引当金繰入額	Provision of allowance for doubtful accounts
+貸倒損失	Bad debt expenses
+賞与引当金繰入額	Provision for bonuses
+退職給付費用	Retirement benefit expenses
+研究開発費	Research and development expenses
+雑費	Miscellaneous expenses
+販売費及び一般管理費	Selling, general and administrative expenses
+営業利益	Operating profit
+経常利益	Ordinary profit
+税引前当期純利益	Profit before income taxes
+法人税、住民税及び事業税	Income taxes - current
+法人税等調整額	Income taxes - deferred
+当期純利益	Profit`;
+
+    function createTable(data) {
+      const lines = data.trim().split('\n');
+      let html = '<table class="account-table"><thead><tr><th>日本語</th><th>英語</th></tr></thead><tbody>';
+      
+      lines.forEach(line => {
+        const [jp, en] = line.split('\t');
+        
+        // 見出し行の処理（【】で囲まれている）
+        if (jp && jp.startsWith('【') && jp.endsWith('】')) {
+          html += `<tr class="section-header"><td colspan="2">${jp}</td></tr>`;
+        } else if (jp && en) {
+          html += `<tr><td>${jp}</td><td>${en}</td></tr>`;
+        }
+      });
+      
+      html += '</tbody></table>';
+      return html;
+    }
+
+    document.getElementById('bs-table').innerHTML = createTable(bsData);
+    document.getElementById('pl-table').innerHTML = createTable(plData);
+  </script>
+</body>
+</html>
