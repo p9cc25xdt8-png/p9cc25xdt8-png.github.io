@@ -89,8 +89,8 @@ const questions = [
   },
   {
     id: 9,
-    question: "Goodwill from a business acquisition is recorded as (　).",
-    translation: "事業買収によって生じたのれんとして計上される。",
+    question: "Excess earning power from a business acquisition is recorded as (　).",
+    translation: "事業買収による超過収益力はのれんとして計上される。",
     choices: ["Goodwill", "Intangible assets", "Investment securities"],
     meanings: ["のれん", "無形固定資産", "投資有価証券"],
     answer: 0,
@@ -100,7 +100,7 @@ const questions = [
   },
   {
     id: 10,
-    question: "Software developed for internal use is classified as (　).",
+    question: "Programs developed for internal use are classified as (　).",
     translation: "内部使用目的で開発されたソフトウェアとして分類される。",
     choices: ["Software", "Patent right", "Supplies"],
     meanings: ["ソフトウエア", "特許権", "貯蔵品"],
@@ -243,7 +243,7 @@ const questions = [
   },
   {
     id: 23,
-    question: "The cumulative depreciation is shown as (　).",
+    question: "The total amount reducing asset value over time is shown as (　).",
     translation: "累積減価償却額は減価償却累計額として表示される。",
     choices: ["Accumulated depreciation", "Depreciation", "Impairment losses"],
     meanings: ["減価償却累計額", "減価償却費", "減損損失"],
@@ -254,7 +254,7 @@ const questions = [
   },
   {
     id: 24,
-    question: "Computer programs are capitalized as (　).",
+    question: "Customized applications developed internally are capitalized as (　).",
     translation: "コンピュータプログラムはソフトウエアとして資産計上される。",
     choices: ["Software", "Patent right", "Supplies"],
     meanings: ["ソフトウエア", "特許権", "貯蔵品"],
@@ -353,7 +353,7 @@ const questions = [
   },
   {
     id: 33,
-    question: "Corporate bonds issued are recorded as (　).",
+    question: "Debt securities issued to the public are recorded as (　).",
     translation: "発行された社債は社債として記録される。",
     choices: ["Bonds payable", "Long-term borrowings", "Notes payable - trade"],
     meanings: ["社債", "長期借入金", "支払手形"],
@@ -364,7 +364,7 @@ const questions = [
   },
   {
     id: 34,
-    question: "Expected employee bonus payments are shown as (　).",
+    question: "Estimated future employee compensation is shown as (　).",
     translation: "従業員への予想賞与支払額は賞与引当金として示される。",
     choices: ["Provision for bonuses", "Accrued expenses", "Bonuses"],
     meanings: ["賞与引当金", "未払費用", "賞与"],
@@ -430,7 +430,7 @@ const questions = [
   },
   {
     id: 40,
-    question: "Annual depreciation charges are recorded as (　).",
+    question: "The systematic allocation of asset cost over time is recorded as (　).",
     translation: "年間の減価償却費は減価償却費として計上される。",
     choices: ["Depreciation", "Accumulated depreciation", "Impairment losses"],
     meanings: ["減価償却費", "減価償却累計額", "減損損失"],
@@ -529,7 +529,7 @@ const questions = [
   },
   {
     id: 49,
-    question: "Employee salaries and wages are recorded as (　).",
+    question: "Regular compensation paid to employees is recorded as (　).",
     translation: "従業員の給与および賃金は給与として計上される。",
     choices: ["Salaries", "Bonuses", "Welfare expenses"],
     meanings: ["給料", "賞与", "福利厚生費"],
@@ -661,7 +661,7 @@ const questions = [
   },
   {
     id: 61,
-    question: "Research and development expenditures are recorded as (　).",
+    question: "Costs for innovation and product development activities are recorded as (　).",
     translation: "研究開発支出は研究開発費として記録される。",
     choices: ["Research and development expenses", "Advertising expenses", "Commission expenses"],
     meanings: ["研究開発費", "広告宣伝費", "支払手数料"],
@@ -683,7 +683,7 @@ const questions = [
   },
   {
     id: 63,
-    question: "Minor miscellaneous costs are recorded as (　).",
+    question: "Small uncategorized costs are recorded as (　).",
     translation: "少額の雑費は雑費として計上される。",
     choices: ["Miscellaneous expenses", "Supplies expenses", "Communication expenses"],
     meanings: ["雑費", "消耗品費", "通信費"],

@@ -58,11 +58,21 @@ function renderQuestion(index) {
   p.innerHTML = `<strong>${displayQuestion}</strong>`;
   card.appendChild(p);
 
+  // シャッフルされた選択肢を作成
+  const shuffledChoices = q.choices.map((choice, i) => ({ choice, originalIndex: i }));
+  // Fisher-Yates シャッフル
+  for (let i = shuffledChoices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledChoices[i], shuffledChoices[j]] = [shuffledChoices[j], shuffledChoices[i]];
+  }
+  // シャッフルされた選択肢の情報を保存（後でcheckAnswerで使用）
+  q._shuffledChoices = shuffledChoices;
+
   const options = document.createElement('div');
   options.className = 'options';
-  q.choices.forEach((choice, i) => {
+  shuffledChoices.forEach(({ choice, originalIndex }) => {
     const label = document.createElement('label');
-    label.innerHTML = `<input type="radio" name="answer" value="${i}"> ${choice}`;
+    label.innerHTML = `<input type="radio" name="answer" value="${originalIndex}"> ${choice}`;
     // accessibility: make label focusable and keyboard-activatable
     label.tabIndex = 0;
     label.addEventListener('keydown', (e) => {
@@ -155,16 +165,19 @@ function checkAnswer(index) {
   // disable inputs
   document.querySelectorAll('input[name="answer"]').forEach(i => i.disabled = true);
 
-  // highlight correct/incorrect
+  // highlight correct/incorrect（シャッフルされた選択肢に対応）
   const inputs = document.querySelectorAll('input[name="answer"]');
-  inputs.forEach((input, idx) => {
+  inputs.forEach((input) => {
     const lab = input.closest('label') || input.parentElement;
     if (!lab) return;
     lab.classList.remove('correct','incorrect');
-    if (idx === q.answer) {
+    const originalIndex = Number(input.value);
+    // 正解の選択肢をハイライト
+    if (originalIndex === q.answer) {
       lab.classList.add('correct');
     }
-    if (input.checked && idx !== q.answer) {
+    // 不正解の選択をハイライト
+    if (input.checked && originalIndex !== q.answer) {
       lab.classList.add('incorrect');
     }
   });
@@ -184,12 +197,13 @@ function checkAnswer(index) {
   // Use the contextual translation if we transformed the question
   const shownTranslation = (/Which English term corresponds to the Japanese account/i.test(q.question) || /英語でどれか。/.test(q.translation)) ? (q.meanings && q.meanings[0] ? `${q.meanings[0]}は貸借対照表で報告される。` : q.translation) : q.translation;
   
-  // 全ての選択肢の意味を表示
+  // 全ての選択肢の意味を表示（シャッフルされた順序で）
   let choicesHTML = '<p style="margin-top:16px;margin-bottom:8px"><strong>各選択肢の意味：</strong></p><ul style="margin:8px 0;padding-left:20px">';
-  q.choices.forEach((choice, idx) => {
-    const meaning = q.meanings[idx] ?? '—';
-    const isCorrect = idx === q.answer;
-    const isSelected = idx === choiceIndex;
+  const shuffledChoices = q._shuffledChoices || q.choices.map((choice, i) => ({ choice, originalIndex: i }));
+  shuffledChoices.forEach(({ choice, originalIndex }) => {
+    const meaning = q.meanings[originalIndex] ?? '—';
+    const isCorrect = originalIndex === q.answer;
+    const isSelected = originalIndex === choiceIndex;
     let badge = '';
     if (isCorrect) badge = '<span style="color:var(--success);font-weight:600"> ✓ 正解</span>';
     if (isSelected && !isCorrect) badge = '<span style="color:var(--error);font-weight:600"> ✗ あなたの選択</span>';
