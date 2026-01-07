@@ -225,6 +225,23 @@
       
       function showQuestion() {
         const q = quizQuestions[currentQuestion];
+        
+        // 選択肢をシャッフル
+        const shuffledChoices = q.choices.map((choice, index) => ({
+          choice: choice,
+          meaning: q.meanings[index],
+          originalIndex: index
+        }));
+        
+        // Fisher-Yatesアルゴリズムでシャッフル
+        for (let i = shuffledChoices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffledChoices[i], shuffledChoices[j]] = [shuffledChoices[j], shuffledChoices[i]];
+        }
+        
+        // 新しい正解のインデックスを見つける
+        const newCorrectIndex = shuffledChoices.findIndex(item => item.originalIndex === q.answer);
+        
         quizContainer.innerHTML = `
           <div class="card">
             <div class="progress-bar" style="display:block">
@@ -234,28 +251,27 @@
             <p><strong>${q.question}</strong></p>
             <p id="translation" style="color:var(--muted);font-size:14px;display:none">${q.translation}</p>
             <ul class="options">
-              ${q.choices.map((choice, i) => `
+              ${shuffledChoices.map((item, i) => `
                 <li>
                   <label id="choice-${i}">
                     <input type="radio" name="answer" value="${i}">
-                    <span class="choice-text">${choice}</span>
+                    <span class="choice-text">${item.choice}</span>
                   </label>
                 </li>
               `).join('')}
             </ul>
-            <button onclick="checkAnswer(${q.answer}, ${currentQuestion}, ${quizQuestions.length})">答える</button>
+            <button onclick="checkAnswer(${newCorrectIndex}, ${currentQuestion}, ${quizQuestions.length}, ${JSON.stringify(shuffledChoices).replace(/"/g, '&quot;')})">答える</button>
             <div id="result"></div>
           </div>
         `;
       }
       
-      window.checkAnswer = function(correctAnswer, questionNum, total) {
+      window.checkAnswer = function(correctAnswer, questionNum, total, shuffledChoices) {
         const selected = document.querySelector('input[name="answer"]:checked');
         if (!selected) return;
         
         const isCorrect = parseInt(selected.value) === correctAnswer;
         const resultDiv = document.getElementById('result');
-        const translationDiv = document.getElementById('translation');
         const q = quizQuestions[questionNum];
         
         // 正解の選択肢をハイライト
@@ -278,7 +294,7 @@
         if (isCorrect) {
           resultHTML = '<div style="color:var(--success);background:#ecfdf5;padding:12px;border-radius:6px;margin-top:12px">✓ 正解です！</div>';
         } else {
-          resultHTML = `<div style="color:var(--error);background:#fef2f2;padding:12px;border-radius:6px;margin-top:12px">✗ 不正解。正解は: <strong>${q.choices[correctAnswer]}</strong></div>`;
+          resultHTML = `<div style="color:var(--error);background:#fef2f2;padding:12px;border-radius:6px;margin-top:12px">✗ 不正解。正解は: <strong>${shuffledChoices[correctAnswer].choice}</strong></div>`;
         }
         
         // 問題文の和訳を追加
@@ -287,11 +303,11 @@
           ${q.translation}
         </div>`;
         
-        // 選択肢の日本語訳を追加
+        // 選択肢の日本語訳を追加（シャッフル後の順序で）
         resultHTML += '<div style="margin-top:12px;padding:12px;background:#f8fafc;border-radius:6px;font-size:14px;">';
         resultHTML += '<div style="font-weight:600;margin-bottom:8px;color:var(--brand)">各選択肢の意味：</div>';
-        q.choices.forEach((choice, i) => {
-          resultHTML += `<div style="margin:4px 0;color:var(--text)"><strong>${choice}</strong> - ${q.meanings[i]}</div>`;
+        shuffledChoices.forEach((item, i) => {
+          resultHTML += `<div style="margin:4px 0;color:var(--text)"><strong>${item.choice}</strong> - ${item.meaning}</div>`;
         });
         resultHTML += '</div>';
         
