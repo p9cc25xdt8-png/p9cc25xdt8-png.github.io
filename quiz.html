@@ -232,13 +232,13 @@
             </div>
             <div class="progress">${currentQuestion + 1} / ${quizQuestions.length}</div>
             <p><strong>${q.question}</strong></p>
-            <p style="color:var(--muted);font-size:14px">${q.translation}</p>
+            <p id="translation" style="color:var(--muted);font-size:14px;display:none">${q.translation}</p>
             <ul class="options">
               ${q.choices.map((choice, i) => `
                 <li>
-                  <label>
+                  <label id="choice-${i}">
                     <input type="radio" name="answer" value="${i}">
-                    ${choice}
+                    <span class="choice-text">${choice}</span>
                   </label>
                 </li>
               `).join('')}
@@ -255,28 +255,60 @@
         
         const isCorrect = parseInt(selected.value) === correctAnswer;
         const resultDiv = document.getElementById('result');
+        const translationDiv = document.getElementById('translation');
+        const q = quizQuestions[questionNum];
         
-        if (isCorrect) {
-          resultDiv.innerHTML = '<div style="color:var(--success);background:#ecfdf5;padding:12px;border-radius:6px;margin-top:12px">✓ 正解です！</div>';
-          setTimeout(() => {
-            currentQuestion++;
-            if (currentQuestion < quizQuestions.length) {
-              showQuestion();
-            } else {
-              quizContainer.innerHTML = '<div class="card"><h2>クイズ完了！</h2><p>お疲れ様でした。</p><button onclick="location.reload()">戻る</button></div>';
-            }
-          }, 1500);
-        } else {
-          resultDiv.innerHTML = `<div style="color:var(--error);background:#fef2f2;padding:12px;border-radius:6px;margin-top:12px">✗ 不正解。正解は: <strong>${quizQuestions[questionNum].choices[correctAnswer]}</strong></div>`;
-          setTimeout(() => {
-            currentQuestion++;
-            if (currentQuestion < quizQuestions.length) {
-              showQuestion();
-            } else {
-              quizContainer.innerHTML = '<div class="card"><h2>クイズ完了！</h2><p>お疲れ様でした。</p><button onclick="location.reload()">戻る</button></div>';
-            }
-          }, 2000);
+        // 日本語訳を表示
+        translationDiv.style.display = 'block';
+        
+        // 正解の選択肢をハイライト
+        const correctLabel = document.getElementById(`choice-${correctAnswer}`);
+        correctLabel.classList.add('correct');
+        
+        // 不正解の場合、選んだ選択肢をハイライト
+        if (!isCorrect) {
+          const selectedLabel = document.getElementById(`choice-${selected.value}`);
+          selectedLabel.classList.add('incorrect');
         }
+        
+        // ボタンを無効化
+        const answerButton = document.querySelector('button');
+        answerButton.disabled = true;
+        answerButton.style.opacity = '0.5';
+        
+        // 正誤判定メッセージ
+        let resultHTML = '';
+        if (isCorrect) {
+          resultHTML = '<div style="color:var(--success);background:#ecfdf5;padding:12px;border-radius:6px;margin-top:12px">✓ 正解です！</div>';
+        } else {
+          resultHTML = `<div style="color:var(--error);background:#fef2f2;padding:12px;border-radius:6px;margin-top:12px">✗ 不正解。正解は: <strong>${q.choices[correctAnswer]}</strong></div>`;
+        }
+        
+        // 選択肢の日本語訳を追加
+        resultHTML += '<div style="margin-top:16px;padding:12px;background:#f8fafc;border-radius:6px;font-size:14px;">';
+        resultHTML += '<div style="font-weight:600;margin-bottom:8px;color:var(--brand)">各選択肢の意味：</div>';
+        q.choices.forEach((choice, i) => {
+          resultHTML += `<div style="margin:4px 0;color:var(--text)"><strong>${choice}</strong> - ${q.meanings[i]}</div>`;
+        });
+        resultHTML += '</div>';
+        
+        // 次の問題へボタンを追加
+        if (currentQuestion < quizQuestions.length - 1) {
+          resultHTML += '<button onclick="goToNextQuestion()" style="margin-top:16px">次の問題へ</button>';
+        } else {
+          resultHTML += '<button onclick="showResults()" style="margin-top:16px">結果を見る</button>';
+        }
+        
+        resultDiv.innerHTML = resultHTML;
+      };
+      
+      window.goToNextQuestion = function() {
+        currentQuestion++;
+        showQuestion();
+      };
+      
+      window.showResults = function() {
+        quizContainer.innerHTML = '<div class="card"><h2>クイズ完了！</h2><p>お疲れ様でした。</p><button onclick="location.reload()">戻る</button></div>';
       };
       
       showQuestion();
