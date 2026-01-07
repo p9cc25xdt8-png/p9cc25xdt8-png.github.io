@@ -20,7 +20,7 @@
     .subject-tabs button[aria-selected="true"]{background:linear-gradient(90deg,var(--accent),var(--brand));color:#fff;border:none;box-shadow:0 6px 18px rgba(31,60,136,0.08)}
     .subject-tabs button:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
 
-    .options{display:flex;flex-direction:column;gap:12px;margin:16px 0;padding:0}
+    .options{display:flex;flex-direction:column;gap:12px;margin:16px 0;padding:0;list-style:none}
     .card label{display:flex;align-items:center;gap:12px;padding:14px 16px;border:2px solid #e5e7eb;border-radius:10px;background:#fff;cursor:pointer;transition:all 0.2s ease;font-size:15px}
     .card label:hover{background:#f8fafc;border-color:#cbd5e1}
     .card label input[type="radio"]{width:20px;height:20px;cursor:pointer;accent-color:var(--brand)}
@@ -258,9 +258,6 @@
         const translationDiv = document.getElementById('translation');
         const q = quizQuestions[questionNum];
         
-        // 日本語訳を表示
-        translationDiv.style.display = 'block';
-        
         // 正解の選択肢をハイライト
         const correctLabel = document.getElementById(`choice-${correctAnswer}`);
         correctLabel.classList.add('correct');
@@ -284,8 +281,14 @@
           resultHTML = `<div style="color:var(--error);background:#fef2f2;padding:12px;border-radius:6px;margin-top:12px">✗ 不正解。正解は: <strong>${q.choices[correctAnswer]}</strong></div>`;
         }
         
+        // 問題文の和訳を追加
+        resultHTML += `<div style="margin-top:12px;padding:12px;background:#f0f9ff;border-radius:6px;font-size:14px;color:var(--text)">
+          <div style="font-weight:600;margin-bottom:4px;color:var(--brand)">問題文の意味：</div>
+          ${q.translation}
+        </div>`;
+        
         // 選択肢の日本語訳を追加
-        resultHTML += '<div style="margin-top:16px;padding:12px;background:#f8fafc;border-radius:6px;font-size:14px;">';
+        resultHTML += '<div style="margin-top:12px;padding:12px;background:#f8fafc;border-radius:6px;font-size:14px;">';
         resultHTML += '<div style="font-weight:600;margin-bottom:8px;color:var(--brand)">各選択肢の意味：</div>';
         q.choices.forEach((choice, i) => {
           resultHTML += `<div style="margin:4px 0;color:var(--text)"><strong>${choice}</strong> - ${q.meanings[i]}</div>`;
