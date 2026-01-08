@@ -9,31 +9,42 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    :root{--bg:#f7f9fc;--card:#fff;--text:#0f1724;--muted:#4b5563;--brand:#1f3c88;--accent:#3b82f6;--focus:#0b5fff;--error:#b91c1c;--success:#047857;--shadow:0 10px 30px rgba(31,60,136,0.08)}
-    body{font-family:'Inter','Noto Sans JP',system-ui,-apple-system,'Segoe UI',sans-serif;margin:0;padding:0;background:var(--bg);color:var(--text);}
-    header{background:linear-gradient(180deg,var(--brand),#19407a);color:#fff;padding:28px 20px;text-align:center}
-    header h1{font-family:'Noto Sans JP', 'Inter';font-weight:700;margin:0;font-size:22px}
-    .card{background:var(--card);max-width:760px;margin:18px auto;padding:18px;border-radius:10px;box-shadow:var(--shadow)}
+    :root{--bg:#f0f4f8;--card:#fff;--text:#0f1724;--muted:#4b5563;--brand:#1f3c88;--accent:#3b82f6;--focus:#0b5fff;--error:#dc2626;--success:#059669;--shadow:0 20px 50px rgba(31,60,136,0.12)}
+    
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes shimmer{0%{background-position:-1000px 0}100%{background-position:1000px 0}}
+    
+    body{font-family:'Inter','Noto Sans JP',system-ui,-apple-system,'Segoe UI',sans-serif;margin:0;padding:0;background:linear-gradient(135deg,#e0e7ff 0%,#f0f4f8 50%,#fef3c7 100%);background-attachment:fixed;color:var(--text);}
+    header{background:linear-gradient(135deg,#1e3a8a 0%,var(--brand) 50%,#1e40af 100%);color:#fff;padding:32px 20px;text-align:center;box-shadow:0 8px 32px rgba(31,60,136,0.25);position:relative;overflow:hidden}
+    header::before{content:'';position:absolute;top:0;left:-100%;width:200%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);animation:shimmer 3s infinite}
+    header h1{font-family:'Noto Sans JP', 'Inter';font-weight:700;margin:0;font-size:24px;text-shadow:0 2px 8px rgba(0,0,0,0.2)}
+    .card{background:var(--card);max-width:760px;margin:24px auto;padding:28px;border-radius:16px;box-shadow:var(--shadow);animation:fadeIn 0.5s ease;border:1px solid rgba(255,255,255,0.8)}
 
     /* Subject tabs */
-    .subject-tabs{display:flex;gap:8px;max-width:760px;margin:16px auto;padding:0 18px}
-    .subject-tabs button{background:transparent;border:1px solid rgba(31,60,136,0.06);padding:8px 12px;border-radius:8px;cursor:pointer;color:var(--brand);font-weight:600}
-    .subject-tabs button[aria-selected="true"]{background:linear-gradient(90deg,var(--accent),var(--brand));color:#fff;border:none;box-shadow:0 6px 18px rgba(31,60,136,0.08)}
+    .subject-tabs{display:flex;gap:10px;max-width:760px;margin:20px auto;padding:0 18px}
+    .subject-tabs button{background:rgba(255,255,255,0.8);border:2px solid rgba(31,60,136,0.12);padding:10px 18px;border-radius:12px;cursor:pointer;color:var(--brand);font-weight:600;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);backdrop-filter:blur(10px)}
+    .subject-tabs button:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(31,60,136,0.15)}
+    .subject-tabs button[aria-selected="true"]{background:linear-gradient(135deg,var(--accent),var(--brand));color:#fff;border:none;box-shadow:0 8px 24px rgba(31,60,136,0.3);transform:translateY(-2px)}
     .subject-tabs button:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
 
-    .options{display:flex;flex-direction:column;gap:12px;margin:16px 0;padding:0;list-style:none}
-    .card label{display:flex;align-items:center;gap:12px;padding:14px 16px;border:2px solid #e5e7eb;border-radius:10px;background:#fff;cursor:pointer;transition:all 0.2s ease;font-size:15px}
-    .card label:hover{background:#f8fafc;border-color:#cbd5e1}
-    .card label input[type="radio"]{width:20px;height:20px;cursor:pointer;accent-color:var(--brand)}
-    .card button{margin-top:12px;padding:10px 16px;background:var(--brand);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;transition:transform .12s ease,box-shadow .12s ease}
-    .card button:active{transform:translateY(1px)}
+    .options{display:flex;flex-direction:column;gap:14px;margin:20px 0;padding:0;list-style:none}
+    .card label{display:flex;align-items:center;gap:14px;padding:16px 20px;border:2px solid #e5e7eb;border-radius:12px;background:linear-gradient(135deg,#fff,#f8fafc);cursor:pointer;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);font-size:15px;position:relative;overflow:hidden}
+    .card label::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(59,130,246,0.1),transparent);transition:left 0.5s}
+    .card label:hover{background:linear-gradient(135deg,#f0f9ff,#dbeafe);border-color:#93c5fd;transform:translateX(4px);box-shadow:0 8px 24px rgba(59,130,246,0.15)}
+    .card label:hover::before{left:100%}
+    .card label input[type="radio"]{width:22px;height:22px;cursor:pointer;accent-color:var(--brand)}
+    .card button{margin-top:16px;padding:14px 24px;background:linear-gradient(135deg,var(--brand),#1e40af);color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:700;font-size:16px;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);box-shadow:0 8px 24px rgba(31,60,136,0.25);position:relative;overflow:hidden}
+    .card button::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.3);transform:translate(-50%,-50%);transition:width 0.6s,height 0.6s}
+    .card button:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(31,60,136,0.35)}
+    .card button:active{transform:translateY(0)}
+    .card button:active::before{width:300px;height:300px}
 
-    .progress-bar{height:8px;background:linear-gradient(90deg,#eef2ff,#f8fafc);border-radius:999px;overflow:hidden;margin:12px 0}
-    .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--brand));width:0%;transition:width .4s cubic-bezier(.2,.9,.3,1)}
+    .progress-bar{height:10px;background:linear-gradient(90deg,#e0e7ff,#f8fafc);border-radius:999px;overflow:hidden;margin:16px 0;box-shadow:inset 0 2px 4px rgba(0,0,0,0.06)}
+    .progress-fill{height:100%;background:linear-gradient(90deg,#3b82f6,#1e40af,#7c3aed);width:0%;transition:width .6s cubic-bezier(.2,.9,.3,1);box-shadow:0 0 12px rgba(59,130,246,0.5)}
 
     /* answer highlight */
-    .card label.correct{background:#ecfdf5;border-color:#10b981;box-shadow:0 4px 12px rgba(16,185,129,0.15)}
-    .card label.incorrect{background:#fef2f2;border-color:#ef4444;box-shadow:0 4px 12px rgba(239,68,68,0.15)}
+    .card label.correct{background:linear-gradient(135deg,#d1fae5,#ecfdf5);border-color:#34d399;box-shadow:0 8px 24px rgba(16,185,129,0.25);animation:fadeIn 0.4s ease}
+    .card label.incorrect{background:linear-gradient(135deg,#fee2e2,#fef2f2);border-color:#f87171;box-shadow:0 8px 24px rgba(239,68,68,0.25);animation:fadeIn 0.4s ease}
 
     /* subtle fade for results */
     #result{transition:opacity .18s ease,transform .18s ease;opacity:1}
@@ -91,19 +102,23 @@
     .progress-bar{border:1px solid rgba(0,0,0,0.04);padding:2px;border-radius:10px}
 
     /* subject cards */
-    .subject-cards{display:grid;grid-template-columns:1fr;gap:10px}
+    .subject-cards{display:grid;grid-template-columns:1fr;gap:16px}
     @media(min-width:560px){.subject-cards{grid-template-columns:repeat(2,1fr)}}
-    .subject-card{background:linear-gradient(180deg,#fff,#f8fafc);border:2px solid #eef2ff;padding:16px;border-radius:10px;transition:all 0.2s ease;text-align:left}
-    .subject-card:hover{background:linear-gradient(180deg,#f8fafc,#eef2ff);border-color:#cbd5e1}
-    .subject-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-    .subject-card-title{font-size:15px;font-weight:600;color:var(--brand)}
-    .subject-card .count{font-size:14px;color:var(--brand);font-weight:600;background:#eef2ff;padding:4px 10px;border-radius:6px}
-    .subject-card-buttons{display:flex;gap:8px}
-    .subject-card-buttons button{flex:1;padding:8px 12px;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:14px;transition:all 0.2s ease}
-    .subject-card-buttons button:first-child{background:var(--brand);color:#fff}
-    .subject-card-buttons button:first-child:hover{filter:brightness(1.1)}
-    .subject-card-buttons button:last-child{background:#e5e7eb;color:var(--text)}
-    .subject-card-buttons button:last-child:hover{background:#cbd5e1}
+    .subject-card{background:linear-gradient(135deg,#fff,#f8fafc);border:2px solid #e0e7ff;padding:20px;border-radius:16px;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);text-align:left;position:relative;overflow:hidden;box-shadow:0 4px 12px rgba(31,60,136,0.08)}
+    .subject-card::before{content:'';position:absolute;top:-50%;right:-50%;width:100%;height:100%;background:radial-gradient(circle,rgba(59,130,246,0.1),transparent);opacity:0;transition:opacity 0.3s}
+    .subject-card:hover{background:linear-gradient(135deg,#f0f9ff,#dbeafe);border-color:#93c5fd;transform:translateY(-4px);box-shadow:0 12px 32px rgba(31,60,136,0.2)}
+    .subject-card:hover::before{opacity:1}
+    .subject-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    .subject-card-title{font-size:16px;font-weight:700;color:var(--brand)}
+    .subject-card .count{font-size:14px;color:#1e40af;font-weight:700;background:linear-gradient(135deg,#dbeafe,#e0e7ff);padding:6px 12px;border-radius:8px;box-shadow:0 2px 8px rgba(31,60,136,0.12)}
+    .subject-card-buttons{display:flex;gap:10px}
+    .subject-card-buttons button{flex:1;padding:10px 14px;border:none;border-radius:10px;cursor:pointer;font-weight:700;font-size:14px;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);position:relative;overflow:hidden}
+    .subject-card-buttons button::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;background:rgba(255,255,255,0.3);border-radius:50%;transform:translate(-50%,-50%);transition:width 0.5s,height 0.5s}
+    .subject-card-buttons button:active::before{width:200px;height:200px}
+    .subject-card-buttons button:first-child{background:linear-gradient(135deg,var(--brand),#1e40af);color:#fff;box-shadow:0 4px 12px rgba(31,60,136,0.25)}
+    .subject-card-buttons button:first-child:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(31,60,136,0.35)}
+    .subject-card-buttons button:last-child{background:linear-gradient(135deg,#e5e7eb,#cbd5e1);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+    .subject-card-buttons button:last-child:hover{background:linear-gradient(135deg,#cbd5e1,#9ca3af);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.12)}
 
     /* explanation area */
     .explanation{margin-top:8px;font-size:14px;color:var(--muted)}
@@ -228,32 +243,22 @@
           </div>
           <div class="subject-card" role="listitem">
             <div class="subject-card-header">
-              <span class="subject-card-title">リスク・手続</span>
-              <span class="count" data-key="リスク・手続">0問</span>
+              <span class="subject-card-title">監査実務</span>
+              <span class="count" data-key="監査実務">0問</span>
             </div>
             <div class="subject-card-buttons">
-              <button data-category="監査論" data-subcategory="リスク・手続" data-mode="random">10問</button>
-              <button data-category="監査論" data-subcategory="リスク・手続" data-mode="all">全問</button>
-            </div>
-          </div>
-          <div class="subject-card" role="listitem">
-            <div class="subject-card-header">
-              <span class="subject-card-title">監査報告</span>
-              <span class="count" data-key="監査報告">0問</span>
-            </div>
-            <div class="subject-card-buttons">
-              <button data-category="監査論" data-subcategory="監査報告" data-mode="random">10問</button>
-              <button data-category="監査論" data-subcategory="監査報告" data-mode="all">全問</button>
+              <button data-category="監査実務" data-subcategory="監査実務" data-mode="random">10問</button>
+              <button data-category="監査実務" data-subcategory="監査実務" data-mode="all">全問</button>
             </div>
           </div>
           <div class="subject-card" role="listitem">
             <div class="subject-card-header">
               <span class="subject-card-title">すべての問題</span>
-              <span class="count" data-key="監査論">0問</span>
+              <span class="count" id="all-audit-count">0問</span>
             </div>
             <div class="subject-card-buttons">
-              <button data-category="監査論" data-mode="random">10問</button>
-              <button data-category="監査論" data-mode="all">全問</button>
+              <button id="all-audit-random" data-mode="random">10問</button>
+              <button id="all-audit-all" data-mode="all">全問</button>
             </div>
           </div>
         </div>
@@ -289,15 +294,18 @@
         '基本概念': 0,
         'リスク・手続': 0,
         '監査報告': 0,
-        '監査論': 0
+        '監査論': 0,
+        '監査実務': 0
       };
       
       if (typeof questions !== 'undefined') {
         questions.forEach(q => {
+          // サブカテゴリのカウント（勘定科目等と監査論のサブカテゴリ用）
           if (q.subcategory && counts.hasOwnProperty(q.subcategory)) {
             counts[q.subcategory]++;
           }
-          if (q.category && counts.hasOwnProperty(q.category)) {
+          // カテゴリのカウント（監査実務は独立カテゴリなのでカウントしない、勘定科目等と監査論のみ）
+          if (q.category && counts.hasOwnProperty(q.category) && q.category !== '監査実務') {
             counts[q.category]++;
           }
         });
@@ -310,6 +318,13 @@
           el.textContent = counts[key] + '問';
         }
       });
+      
+      // すべての監査問題（監査論+監査実務）のカウント更新
+      const allAuditCount = counts['監査論'] + counts['監査実務'];
+      const allAuditCountEl = document.getElementById('all-audit-count');
+      if (allAuditCountEl) {
+        allAuditCountEl.textContent = allAuditCount + '問';
+      }
       
       // Add click handlers for subject card buttons
       document.querySelectorAll('.subject-card-buttons button').forEach(btn => {
@@ -341,6 +356,28 @@
           displayQuiz(selectedQuestions, quizTitle);
         });
       });
+      
+      // すべての監査問題ボタンのイベントハンドラ
+      const allAuditRandomBtn = document.getElementById('all-audit-random');
+      const allAuditAllBtn = document.getElementById('all-audit-all');
+      
+      if (allAuditRandomBtn) {
+        allAuditRandomBtn.addEventListener('click', function() {
+          const filtered = questions.filter(q => q.category === '監査論' || q.category === '監査実務');
+          if (filtered.length === 0) return;
+          const selectedQuestions = filtered.sort(() => Math.random() - 0.5).slice(0, 10);
+          displayQuiz(selectedQuestions, '監査論 - すべての問題');
+        });
+      }
+      
+      if (allAuditAllBtn) {
+        allAuditAllBtn.addEventListener('click', function() {
+          const filtered = questions.filter(q => q.category === '監査論' || q.category === '監査実務');
+          if (filtered.length === 0) return;
+          const selectedQuestions = filtered.sort(() => Math.random() - 0.5);
+          displayQuiz(selectedQuestions, '監査論 - すべての問題');
+        });
+      }
     });
     
     function displayQuiz(quizQuestions, quizTitle) {

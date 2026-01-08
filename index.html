@@ -9,40 +9,74 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg: #f7f9fc;
+      --bg: #f0f4f8;
       --card: #ffffff;
       --text: #0f1724;
       --muted: #4b5563;
       --brand: #1f3c88;
       --accent: #3b82f6;
       --focus: #0b5fff;
-      --error: #b91c1c;
-      --success: #047857;
-      --glass: rgba(255,255,255,0.6);
-      --shadow: 0 6px 20px rgba(31,60,136,0.08);
+      --error: #dc2626;
+      --success: #059669;
+      --glass: rgba(255,255,255,0.8);
+      --shadow: 0 20px 50px rgba(31,60,136,0.12);
     }
+    
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes shimmer{0%{background-position:-1000px 0}100%{background-position:1000px 0}}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    
     html,body{height:100%;}
     body{
       font-family: 'Inter', 'Noto Sans JP', system-ui, -apple-system, 'Segoe UI', sans-serif;
-      margin:0;padding:0;background:var(--bg);color:var(--text);text-align:left;line-height:1.6;
+      margin:0;padding:0;
+      background:linear-gradient(135deg,#e0e7ff 0%,#f0f4f8 50%,#fef3c7 100%);
+      background-attachment:fixed;
+      color:var(--text);text-align:left;line-height:1.6;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
     }
-    header{background:linear-gradient(180deg,var(--brand),#19407a);color:#fff;padding:32px 16px;text-align:center}
-    header h1{font-family:'Noto Sans JP', 'Inter';font-weight:700;margin:0;font-size:24px;letter-spacing:.02em}
-    header p{margin-top:8px;color:rgba(255,255,255,0.9);font-size:15px}
-    section{padding:24px 16px;max-width:1100px;margin:0 auto}
-    .card{background:var(--card);max-width:760px;margin:16px auto;padding:20px 16px;border-radius:12px;box-shadow:var(--shadow);transition:transform .18s ease,box-shadow .18s ease}
-    .card:hover{transform:translateY(-2px)}
-    .card h2{font-size:20px;margin-top:0;margin-bottom:16px}
-    .card h3{font-size:17px;margin-top:20px;margin-bottom:12px}
-    .card p{font-size:15px;line-height:1.7}
+    header{
+      background:linear-gradient(135deg,#1e3a8a 0%,var(--brand) 50%,#1e40af 100%);
+      color:#fff;padding:48px 16px;text-align:center;
+      box-shadow:0 8px 32px rgba(31,60,136,0.25);
+      position:relative;overflow:hidden;
+    }
+    header::before{
+      content:'';position:absolute;top:0;left:-100%;width:200%;height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);
+      animation:shimmer 3s infinite;
+    }
+    header h1{
+      font-family:'Noto Sans JP', 'Inter';font-weight:700;margin:0;
+      font-size:32px;letter-spacing:.02em;
+      text-shadow:0 2px 8px rgba(0,0,0,0.2);
+      animation:float 3s ease-in-out infinite;
+    }
+    header p{
+      margin-top:12px;color:rgba(255,255,255,0.95);font-size:16px;
+      text-shadow:0 1px 4px rgba(0,0,0,0.15);
+    }
+    section{padding:32px 16px;max-width:1100px;margin:0 auto}
+    .card{
+      background:var(--card);max-width:760px;margin:24px auto;padding:28px 24px;
+      border-radius:16px;box-shadow:var(--shadow);
+      transition:transform .3s cubic-bezier(0.4,0,0.2,1),box-shadow .3s ease;
+      animation:fadeIn 0.5s ease;
+      border:1px solid rgba(255,255,255,0.8);
+    }
+    .card:hover{transform:translateY(-4px);box-shadow:0 24px 60px rgba(31,60,136,0.18)}
+    .card h2{font-size:24px;margin-top:0;margin-bottom:20px;color:var(--brand);font-weight:700}
+    .card h3{font-size:18px;margin-top:24px;margin-bottom:14px;color:var(--brand);font-weight:700}
+    .card p{font-size:15px;line-height:1.8;margin-bottom:16px}
+    .card strong{color:var(--brand);font-weight:700}
     @media(min-width:768px){
-      header{padding:48px 20px}
-      header h1{font-size:28px}
-      header p{font-size:16px}
-      section{padding:48px 20px}
-      .card{margin:20px auto;padding:24px}
+      header{padding:64px 20px}
+      header h1{font-size:40px}
+      header p{font-size:18px}
+      section{padding:56px 20px}
+      .card{margin:28px auto;padding:36px 32px}
+      .card h2{font-size:26px}
     }
 
     /* Quiz styles */
@@ -57,24 +91,31 @@
 
     /* Navigation */
     nav.site-nav {
-      background:#fff;
-      border-bottom:1px solid #ddd;
+      background:rgba(255,255,255,0.95);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(31,60,136,0.1);
       padding:12px 16px;
-      position:relative;
+      position:sticky;
+      top:0;
+      z-index:1000;
+      box-shadow:0 4px 12px rgba(31,60,136,0.08);
     }
     .menu-toggle {
       display:block;
-      background:var(--brand);
+      background:linear-gradient(135deg,var(--brand),#1e40af);
       color:#fff;
       border:none;
-      padding:12px 18px;
-      border-radius:6px;
+      padding:12px 20px;
+      border-radius:10px;
       cursor:pointer;
-      font-weight:600;
+      font-weight:700;
       font-size:15px;
       min-height:44px;
       touch-action:manipulation;
+      box-shadow:0 4px 12px rgba(31,60,136,0.25);
+      transition:all 0.3s ease;
     }
+    .menu-toggle:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(31,60,136,0.35)}
     nav.site-nav > div:last-child {
       display:none;
       flex-direction:column;
@@ -87,10 +128,10 @@
     nav.site-nav a {
       text-decoration: none;
       color: var(--brand);
-      font-weight: 500;
-      padding:12px 16px;
-      background:#f8f9fa;
-      border-radius:6px;
+      font-weight: 600;
+      padding:12px 18px;
+      background:linear-gradient(135deg,#f8f9fa,#e9ecef);
+      border-radius:10px;
       display:block;
       text-align:center;
       font-size:15px;
@@ -98,32 +139,61 @@
       display:flex;
       align-items:center;
       justify-content:center;
+      transition:all 0.3s ease;
+      box-shadow:0 2px 8px rgba(0,0,0,0.05);
     }
-    nav.site-nav a:hover { background:#e9ecef; }
+    nav.site-nav a:hover { 
+      background:linear-gradient(135deg,#e9ecef,#cbd5e1);
+      transform:translateX(4px);
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    }
     @media(min-width:768px){
       .menu-toggle{display:none}
       nav.site-nav > div:last-child{display:flex!important;flex-direction:row;gap:0;margin-top:0}
-      nav.site-nav a{display:inline;padding:8px 12px;background:transparent;margin-right:15px}
+      nav.site-nav a{display:inline;padding:8px 16px;background:transparent;margin-right:20px;box-shadow:none}
       nav.site-nav a:last-child{margin-right:0}
-      nav.site-nav a:hover{background:transparent;text-decoration:underline}
+      nav.site-nav a:hover{background:rgba(31,60,136,0.08);transform:translateY(-2px);border-radius:8px}
     }
 
     /* Focus styles (keyboard users) */
     :focus{outline:none}
-    button:focus-visible, nav.site-nav a:focus-visible { outline:3px solid var(--focus); outline-offset:3px; border-radius:6px; box-shadow:0 8px 24px rgba(11,88,255,0.10); }
-    @media (prefers-contrast: more) { button:focus-visible, nav.site-nav a:focus-visible { outline-width:4px } }
+    button:focus-visible, nav.site-nav a:focus-visible { 
+      outline:3px solid var(--focus); 
+      outline-offset:3px; 
+      border-radius:8px; 
+      box-shadow:0 8px 24px rgba(11,88,255,0.15); 
+    }
+    @media (prefers-contrast: more) { 
+      button:focus-visible, nav.site-nav a:focus-visible { outline-width:4px } 
+    }
     button:focus-visible{transform:translateY(-1px)}
 
     footer {
-      background: #eee;
-      padding: 24px 16px;
-      font-size: 13px;
+      background: linear-gradient(135deg,#e0e7ff,#f3f4f6);
+      padding: 32px 16px;
+      font-size: 14px;
       text-align: center;
       line-height:1.8;
+      border-top:1px solid rgba(31,60,136,0.1);
+      box-shadow:0 -4px 12px rgba(31,60,136,0.05);
     }
-    footer a{min-height:44px;display:inline-flex;align-items:center;padding:8px 12px}
+    footer a{
+      min-height:44px;
+      display:inline-flex;
+      align-items:center;
+      padding:8px 16px;
+      color:var(--brand);
+      font-weight:600;
+      text-decoration:none;
+      border-radius:8px;
+      transition:all 0.3s ease;
+    }
+    footer a:hover{
+      background:rgba(31,60,136,0.08);
+      transform:translateY(-2px);
+    }
     @media(min-width:768px){
-      footer{padding:20px;font-size:14px}
+      footer{padding:40px 20px;font-size:15px}
     }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8987124384590109"
